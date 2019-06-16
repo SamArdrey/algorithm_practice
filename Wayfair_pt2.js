@@ -1,3 +1,114 @@
+// // Your code goes here. Feel free to make helper classes if needed
+// class LeaderBoard {
+//   constructor() {
+//     this.scores = {}
+//     this.averageScores = [];
+//   }
+
+//   add_score = (player_id, score) => {
+//     let exists = false;
+//     let average = 0;
+
+//     //Add the score to the hash of player scores
+//     if (!this.scores[player_id]) {
+//       //Updates the scores hash to include an array with the score
+//       this.scores[player_id] = [score];
+//       //Pushes the player_id and score into the average score aray
+//       this.averageScores.push([player_id, score]);
+//       average = score;
+//     } else {
+//       //pushes the score into the scores hash under the player_id
+//       this.scores[player_id].push(score);
+//       exists = true;
+//     }
+
+//     //iterates through scores and gets the average,
+//     //then it iterates through the average scoreboard list and
+//     //updates accordingly
+//     if (exists) {
+//       average = this.getAverage(player_id);
+//       //updates average scores accordingly
+//       this.updateAverages(player_id, average);
+//     }
+
+//     //Keeps the averageScores sorted always,
+//     //that way, lookup of scores will have consistant time complexity
+//     this.averageScores = this.quickSortByScore(this.averageScores);
+//     return average;
+//   };
+
+//   //iterates through scores and returns the average,
+//   getAverage = (player_id) => {
+//     let average = 0;
+//     for (let entry of this.scores[player_id]) {
+//       average += entry;
+//     }
+//     return average / this.scores[player_id].length;
+//   }
+
+//   //updates average scores accordingly
+//   updateAverages = (player_id, average) => {
+//     for (let entry of this.averageScores) {
+//       if (entry[0] === player_id) {
+//         entry[1] = average;
+//         //break once the score is updated, saving marginal time
+//         return;
+//       }
+//     }
+//   }
+
+//   //because quicksort
+//   quickSortByScore = (averageScores) => {
+//     if (averageScores.length < 2) return averageScores;
+
+//     let func = (x, y) => {
+//       if (x > y) return - 1;
+//       return 1;
+//     };
+
+//     const pivot = averageScores[0];
+//     let left = averageScores.slice(1).filter( (el) => func(el[1], pivot[1]) === -1)
+//     let right = averageScores.slice(1).filter( (el) => func(el[1], pivot[1]) != -1)
+//     left = this.quickSortByScore(left);
+//     right = this.quickSortByScore(right);
+
+//     return left.concat([pivot]).concat(right);
+//   };
+
+//   top = (num_players) => {
+//     let players = [];
+//     for (let i = 0; i < num_players; i++) {
+//       players.push(this.averageScores[i][0])
+//     }
+
+//     return players;
+//   };
+
+//   reset = (player_id) => {
+//     //resets the list of scores for the player
+//     this.scores[player_id] = [];
+
+//     //Iterate through the array,
+//     //resetting the scores for the player
+//     for (let entry of this.averageScores) {
+//       if (entry[0] === player_id) {
+//         entry[1] = 0;
+//         break;
+//       }
+//     }
+
+//     this.averageScores = this.quickSortByScore(this.averageScores)
+//   };
+// }
+
+
+
+
+
+
+
+
+///FINAL SOLUTION
 /*
 Exercise Goal:
     - The goal of this exercise is to show us how you apply software engineering
@@ -96,29 +207,25 @@ class LeaderBoard {
   }
 
   add_score = (player_id, score) => {
-    let exists = false;
     let average = 0;
 
     //Add the score to the hash of player scores
     if (!this.scores[player_id]) {
+      let newPlayer = new Player(player_id, score);
       //Updates the scores hash to include an array with the score
-      this.scores[player_id] = [score];
-      //Pushes the player_id and score into the average score aray
-      this.averageScores.push([player_id, score]);
+      this.scores[player_id] = newPlayer;
+      //Pushes the player object into the average score array
+      this.averageScores.push(newPlayer);
       average = score;
     } else {
       //pushes the score into the scores hash under the player_id
-      this.scores[player_id].push(score);
-      exists = true;
-    }
+      let player = this.scores[player_id]
+      player.addScore(score)
 
-    //iterates through scores and gets the average,
-    //then it iterates through the average scoreboard list and
-    //updates accordingly
-    if (exists) {
-      average = this.getAverage(player_id);
-      //updates average scores accordingly
-      this.updateAverages(player_id, average);
+      //iterates through scores and gets the average,
+      //then it iterates through the average scoreboard list and
+      //updates accordingly
+      average = player.average;
     }
 
     //Keeps the averageScores sorted always,
@@ -126,26 +233,6 @@ class LeaderBoard {
     this.averageScores = this.quickSortByScore(this.averageScores);
     return average;
   };
-
-  //iterates through scores and returns the average,
-  getAverage = (player_id) => {
-    let average = 0;
-    for (let entry of this.scores[player_id]) {
-      average += entry;
-    }
-    return average / this.scores[player_id].length;
-  }
-
-  //updates average scores accordingly
-  updateAverages = (player_id, average) => {
-    for (let entry of this.averageScores) {
-      if (entry[0] === player_id) {
-        entry[1] = average;
-        //break once the score is updated, saving marginal time
-        return;
-      }
-    }
-  }
 
   //because quicksort
   quickSortByScore = (averageScores) => {
@@ -157,8 +244,8 @@ class LeaderBoard {
     };
 
     const pivot = averageScores[0];
-    let left = averageScores.slice(1).filter( (el) => func(el[1], pivot[1]) === -1)
-    let right = averageScores.slice(1).filter( (el) => func(el[1], pivot[1]) != -1)
+    let left = averageScores.slice(1).filter( (el) => func(el.average, pivot.average) === -1)
+    let right = averageScores.slice(1).filter( (el) => func(el.average, pivot.average) != -1)
     left = this.quickSortByScore(left);
     right = this.quickSortByScore(right);
 
@@ -168,7 +255,8 @@ class LeaderBoard {
   top = (num_players) => {
     let players = [];
     for (let i = 0; i < num_players; i++) {
-      players.push(this.averageScores[i][0])
+      let player = this.averageScores[i];
+      players.push(player.playerId)
     }
 
     return players;
@@ -176,19 +264,40 @@ class LeaderBoard {
 
   reset = (player_id) => {
     //resets the list of scores for the player
-    this.scores[player_id] = [];
-
-    //Iterate through the array,
-    //resetting the scores for the player
-    for (let entry of this.averageScores) {
-      if (entry[0] === player_id) {
-        entry[1] = 0;
-        break;
-      }
-    }
+    let player = this.scores[player_id]
+    player.resetScores()
 
     this.averageScores = this.quickSortByScore(this.averageScores)
   };
+}
+
+
+class Player {
+  constructor(player_id, score) {
+    this.playerId = player_id;
+    this.scores = [score];
+    this.average = score;
+  }
+
+  addScore = (score) => {
+    this.scores.push(score);
+    this.updateAverage();
+  }
+
+  resetScores = () => {
+    this.scores = [];
+    this.average = 0;
+  }
+
+  updateAverage = () => {
+    this.average = 0;
+    for (let entry of this.scores) {
+      this.average += entry;
+    }
+    this.average = this.average / this.scores.length;
+
+    return this.average;
+  }
 }
 
 // Test code here
@@ -204,6 +313,11 @@ function array_equals(a, b) {
 }
 
 var leader_board = new LeaderBoard()
+
+
+
+
+
 
 leader_board.add_score(1, 50)
 console.log(leader_board.add_score(2, 80) == 80)
