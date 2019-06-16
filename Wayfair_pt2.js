@@ -120,7 +120,7 @@ class LeaderBoard {
       //updates average scores accordingly
       this.updateAverages(player_id, average);
     }
-   
+
     //Keeps the averageScores sorted always,
     //that way, lookup of scores will have consistant time complexity
     this.averageScores = this.quickSortByScore(this.averageScores);
@@ -170,7 +170,7 @@ class LeaderBoard {
     for (let i = 0; i < num_players; i++) {
       players.push(this.averageScores[i][0])
     }
-    console.log(players)
+
     return players;
   };
 
