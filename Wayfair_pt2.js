@@ -3,12 +3,12 @@
 //   constructor() {
 //     this.scores = {}
 //     this.averageScores = [];
-//   }    
+//   }
 
 //   add_score = (player_id, score) => {
 //     let exists = false;
 //     let average = 0;
-
+ 
 //     //Add the score to the hash of player scores
 //     if (!this.scores[player_id]) {
 //       //Updates the scores hash to include an array with the score
