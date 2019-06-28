@@ -42,9 +42,9 @@ function minChange(coins, amount, memo = {}) {
 
     if (amount in memo) return memo[amount];
 
-    let numCoins = [];
+    let numCoins = []; 
     coins.forEach(coin => {
-        if (coin <= amount) {     
+        if (coin <= amount) {
             numCoins.push(minChange(coins, amount - coin, memo) + 1);
         }
     });
