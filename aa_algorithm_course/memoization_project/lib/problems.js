@@ -40,8 +40,8 @@ function lucasNumberMemo(n, memo = {}) {
 function minChange(coins, amount, memo = {}) {
     if (amount === 0) return 0;
 
-    if (amount in memo) return memo[amount];
-   
+     if (amount in memo) return memo[amount];
+
     let numCoins = [];
     coins.forEach(coin => {
         if (coin <= amount) {
