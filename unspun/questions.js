@@ -95,7 +95,6 @@ function checkType(typ) {
 function leftTurn(one, two, three) {
   // (2𝑥−1x)(3y−1y)−(2y−1y)(3x−1x)
   let result = (two[0]-one[0])*(three[1]-one[1])-(two[1]-one[1])*(three[0]-one[0]);
-  console.log(result);
   return result > 0;
 }
 leftTurn([2, 2], [2, 4], [0, 4]);
