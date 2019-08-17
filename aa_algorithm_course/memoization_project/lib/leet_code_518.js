@@ -3,7 +3,7 @@
 
 sx
  das
-
+ 
 
 function power(num, pow) {
   if (pow === 0) return 1;
